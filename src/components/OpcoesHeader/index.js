@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Opcao = styled.li`
   font-size: 16px;
@@ -12,35 +12,48 @@ const Opcao = styled.li`
   padding: 0 10px;
   cursor: pointer;
   min-width: 120px;
-  background-color: transparent; /* Fundo transparente por padrão */
-  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease; /* Efeito de transição suave */
-
-  color: #666; /* Cor da fonte em cinza */
-
+  background-color: transparent;
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  color: #666;
+  
   &:hover {
-    background-color: #f5f5f5; /* Cinza quase branco ao passar o mouse */
-    transform: scale(0.90); /* Reduz o tamanho ao passar o mouse */
-    text-decoration: none; /* Remove o sublinhado do texto ao passar o mouse */
+    background-color: #f5f5f5;
+    transform: scale(0.90);
+    text-decoration: none;
   }
 `;
 
-const Opcoes = styled.ul`
+const OpcoesNav = styled.nav`
   display: flex;
   list-style-type: none;
   padding: 0;
 `;
 
-const textoOpcoes = ['Início', 'Sobre', 'Restaurantes', 'Locais', 'Lazer', 'Mais'];
+const textoOpcoes = [
+  { texto: 'Início', descricao: 'Página inicial' },
+  { texto: 'Sobre', descricao: 'Sobre nós' },
+  { texto: 'Restaurantes', descricao: 'Nossos restaurantes' },
+  { texto: 'Locais', descricao: 'Nossos locais' },
+  { texto: 'Lazer', descricao: 'Atividades de lazer' },
+  { texto: 'Mais', descricao: 'Mais opções' },
+  { texto: 'Login/Sign in', descricao: 'Entrar na sua conta' },
+];
 
 function OpcoesHeader() {
   return (
-    <Opcoes>
-      {textoOpcoes.map((texto) => (
-        <Link to={`/${texto.toLowerCase()}`} key={texto} style={{ textDecoration: 'none' }}>
+    <OpcoesNav>
+      {textoOpcoes.map(({ texto, descricao }) => (
+        <NavLink
+          to={`/${texto.toLowerCase()}`}
+          key={texto}
+          style={{ textDecoration: 'none' }}
+          aria-label={descricao}
+          activeClassName="link-ativo" // Classe para indicar a página atual
+        >
           <Opcao><p>{texto}</p></Opcao>
-        </Link>
+        </NavLink>
       ))}
-    </Opcoes>
+    </OpcoesNav>
   );
 }
 
