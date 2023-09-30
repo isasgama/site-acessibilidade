@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.form`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -26,10 +26,10 @@ const SearchButton = styled.button`
 const SearchResults = styled.ul`
   list-style-type: none;
   padding: 0;
+  margin-top: 10px; /* Espaço adicional para os resultados */
 `;
 
 const SearchResultItem = styled.li`
-  margin-bottom: 10px;
   background-color: #f5f5f5;
   padding: 10px;
   border-radius: 5px;
@@ -43,19 +43,23 @@ function SearchBar({ onSearch }) {
     setSearchTerm(e.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault(); // Evita a recarga da página ao pressionar "Enter"
     onSearch(searchTerm);
   };
 
   return (
-    <SearchContainer>
+    <SearchContainer onSubmit={handleSearch} aria-label="Pesquisar Locais">
       <SearchInput
         type="text"
         placeholder="Pesquisar Locais..."
         value={searchTerm}
         onChange={handleChange}
       />
-      <SearchButton onClick={handleSearch}>Buscar</SearchButton>
+      <SearchButton type="submit">Buscar</SearchButton>
+      <SearchResults aria-live="polite"> {/* Indique que os resultados são dinâmicos */}
+        {/* Renderize os resultados aqui */}
+      </SearchResults>
     </SearchContainer>
   );
 }

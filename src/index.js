@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle } from 'styled-components'
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Header from './components/Header'
+import Home from './components/Rotas/Home';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -33,6 +34,9 @@ root.render(
     <GlobalStyle />
     <BrowserRouter>
       <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );
