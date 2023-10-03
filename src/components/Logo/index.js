@@ -16,7 +16,7 @@ const LogoText = styled.div`
 function Logo() {
   return (
     <LogoContainer>
-      <LogoText>EazyAccess</LogoText>
+      <LogoText>EasyAccess</LogoText>
     </LogoContainer>
   );
 }

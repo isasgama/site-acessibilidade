@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Header from './components/Header'
 import Home from './components/Rotas/Home';
 import Sobre from './components/Rotas/Sobre';
+import Login from './components/Rotas/Login';
+import ForgotPassword from './components/Rotas/EsqueciSenha';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -38,6 +40,8 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre" element={<Sobre />} />
+        <Route path="/login/sign in" element={<Login />} />
+        <Route path="/esqueci-senha" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

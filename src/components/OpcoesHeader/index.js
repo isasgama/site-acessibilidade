@@ -9,13 +9,14 @@ const Opcao = styled.li`
   align-items: center;
   text-align: center;
   height: 100%;
-  padding: 0 10px;
+  padding: 0 -3px;
   cursor: pointer;
   min-width: 120px;
   background-color: transparent;
   transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
   color: #666;
-  
+  white-space: nowrap; /* Impede a quebra de linha */
+
   &:hover {
     background-color: #f5f5f5;
     transform: scale(0.90);
@@ -27,6 +28,7 @@ const OpcoesNav = styled.nav`
   display: flex;
   list-style-type: none;
   padding: 0;
+  overflow-x: auto; /* Adiciona uma barra de rolagem horizontal em telas pequenas */
 `;
 
 const textoOpcoes = [
@@ -35,7 +37,6 @@ const textoOpcoes = [
   { texto: 'Restaurantes', descricao: 'Nossos restaurantes' },
   { texto: 'Locais', descricao: 'Nossos locais' },
   { texto: 'Lazer', descricao: 'Atividades de lazer' },
-  { texto: 'Mais', descricao: 'Mais opções' },
   { texto: 'Login/Sign in', descricao: 'Entrar na sua conta' },
 ];
 
