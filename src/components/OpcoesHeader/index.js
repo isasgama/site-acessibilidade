@@ -15,12 +15,17 @@ const Opcao = styled.li`
   background-color: transparent;
   transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
   color: #666;
-  white-space: nowrap; /* Impede a quebra de linha */
+  white-space: pre; /* Impede a quebra de linha */
+  margin-right: 10px; /* Adiciona margem direita de 10px */
 
   &:hover {
     background-color: #f5f5f5;
     transform: scale(0.90);
     text-decoration: none;
+  }
+
+  &:last-child {
+    margin-right: 0; /* Remove a margem direita da última opção */
   }
 `;
 
@@ -28,7 +33,7 @@ const OpcoesNav = styled.nav`
   display: flex;
   list-style-type: none;
   padding: 0;
-  overflow-x: auto; /* Adiciona uma barra de rolagem horizontal em telas pequenas */
+  flex-wrap: wrap; /* Permite que os itens do cabeçalho quebrem em várias linhas */
 `;
 
 const textoOpcoes = [
@@ -37,7 +42,7 @@ const textoOpcoes = [
   { texto: 'Restaurantes', descricao: 'Nossos restaurantes' },
   { texto: 'Locais', descricao: 'Nossos locais' },
   { texto: 'Lazer', descricao: 'Atividades de lazer' },
-  { texto: 'Login/Sign in', descricao: 'Entrar na sua conta' },
+  { texto: 'Login', descricao: 'Entrar na sua conta' },
 ];
 
 function OpcoesHeader() {
@@ -47,11 +52,11 @@ function OpcoesHeader() {
         <NavLink
           to={texto.toLowerCase() === 'início' ? '/' : `/${texto.toLowerCase()}`}
           key={texto}
-          style={{ textDecoration: 'none' }}
+          style={{ textDecoration: 'none', flex: '1 1 auto' }} // Adiciona flex-grow para ajustar o espaço disponível
           aria-label={descricao}
           activeClassName="link-ativo" // Classe para indicar a página atual
         >
-          <Opcao><p>{texto}</p></Opcao>
+          <Opcao>{texto}</Opcao>
         </NavLink>
       ))}
     </OpcoesNav>

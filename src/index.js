@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle } from 'styled-components'
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Fragment } from "react";
+import useAuth from "../src/Hooks/useAuth";
 import Header from './components/Header'
-import Home from './components/Rotas/Home';
-import Sobre from './components/Rotas/Sobre';
-import Login from './components/Rotas/Login';
-import ForgotPassword from './components/Rotas/EsqueciSenha';
+import Home from './Pages/Home';
+import Sobre from './Pages/Sobre';
+import Login from './Pages/Login';
+import ForgotPassword from './Pages/EsqueciSenha';
+import Cadastro from './Pages/Cadastro';
+import HomeUser from './Pages/HomeUsuario';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -27,9 +31,13 @@ const GlobalStyle = createGlobalStyle`
   li {
     list-style: none;    
   }
-
-
 `
+
+const Private = ({ Item }) => {
+  const { signed } = useAuth();
+
+  return signed > 0 ? <Item /> : <Login />;
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -39,9 +47,11 @@ root.render(
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route exact path="/home" element={<Private Item={HomeUser} />} />
         <Route path="/sobre" element={<Sobre />} />
-        <Route path="/login/sign in" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/esqueci-senha" element={<ForgotPassword />} />
+        <Route path='/cadastre-se' element={<Cadastro />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -49,11 +49,11 @@ const CardsContainer = styled.div`
 
 const Card = styled.div`
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 10px;
   border-radius: 5px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  color: black; /* Cor azul para a fonte */
+  color: black; /* Cor preta para a fonte */
   text-align: center; /* Centraliza o texto dentro do card */
 `;
 
@@ -70,7 +70,7 @@ function Home() {
   return (
     <div>
       <HeaderTop>
-        <HeaderOverlay /> {/* Sobreposição de cor preta semitransparente */}
+        <HeaderOverlay />
         <HeaderTitle>EasyAccess</HeaderTitle>
         <HeaderSubtitle>Um mundo mais acessível e inclusivo começa aqui!</HeaderSubtitle>
       </HeaderTop>

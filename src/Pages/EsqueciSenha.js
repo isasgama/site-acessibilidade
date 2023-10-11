@@ -74,7 +74,7 @@ function ForgotPassword() {
         </InputField>
         <Button onClick={handleResetPassword}>Redefinir Senha</Button>
         <p>
-          <a href="/login/sign in" style={{ color: '#007bff' }}>
+          <a href="/login" style={{ color: '#007bff' }}>
             Voltar ao Login
           </a>
         </p>
