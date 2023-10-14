@@ -1,24 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import useAuth from '../Hooks/useAuth';
+import ButtonLogin from '../components/Button';
 
-const HomeContainer = styled.div`
+export const Container = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 2rem;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 20px;
 `;
 
-const WelcomeMessage = styled.h2`
-  font-size: 24px;
-  margin: 1rem 0;
-`;
+export const Title = styled.h2``;
 
-const HomeUser = ({ user }) => {
+const HomeUser = () => {
+  const { signout } = useAuth();
+  const navigate = useNavigate();
+
   return (
-    <HomeContainer>
-      <WelcomeMessage>Bem-vindo, {user.name}!</WelcomeMessage>
-      {/* Outros conteúdos da página inicial aqui */}
-    </HomeContainer>
+    <Container>
+      <Title>Home</Title>
+      <ButtonLogin Text="Sair" onClick={() => [signout(), navigate("/")]}>
+        Sair
+      </ButtonLogin>
+    </Container>
   );
 };
 

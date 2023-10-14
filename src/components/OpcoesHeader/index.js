@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import useAuth from '../../Hooks/useAuth';
 
 const Opcao = styled.li`
   font-size: 16px;
@@ -37,26 +38,37 @@ const OpcoesNav = styled.nav`
 `;
 
 const textoOpcoes = [
-  { texto: 'Início', descricao: 'Página inicial' },
+  { texto: 'Início', descricao: 'Página inicial'},
   { texto: 'Sobre', descricao: 'Sobre nós' },
   { texto: 'Restaurantes', descricao: 'Nossos restaurantes' },
   { texto: 'Locais', descricao: 'Nossos locais' },
   { texto: 'Lazer', descricao: 'Atividades de lazer' },
   { texto: 'Login', descricao: 'Entrar na sua conta' },
+  { texto: 'Home', descricao: 'Página do usuário'}
 ];
 
-function OpcoesHeader() {
+function OpcoesHeader( ) {
+  const { signed } = useAuth();
+  
   return (
     <OpcoesNav>
-      {textoOpcoes.map(({ texto, descricao }) => (
+      {textoOpcoes.map(({ texto, descricao, icone }) => (
         <NavLink
           to={texto.toLowerCase() === 'início' ? '/' : `/${texto.toLowerCase()}`}
           key={texto}
-          style={{ textDecoration: 'none', flex: '1 1 auto' }} // Adiciona flex-grow para ajustar o espaço disponível
+          style={{ textDecoration: 'none', flex: '1 1 auto' }}
           aria-label={descricao}
-          activeClassName="link-ativo" // Classe para indicar a página atual
+          activeClassName="link-ativo"
         >
-          <Opcao>{texto}</Opcao>
+          {texto.toLowerCase() === 'login' && signed ? null : (
+            <Opcao>
+              {texto === 'Home' && !signed ? null : ( // Não renderiza a opção "Home" se o usuário não estiver logado
+                <>
+                  {texto === 'Home' ? <Opcao>Minha Conta</Opcao> : texto}
+                </>
+              )}
+            </Opcao>
+          )}
         </NavLink>
       ))}
     </OpcoesNav>

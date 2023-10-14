@@ -1,58 +1,56 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import useAuth from '../Hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
+import Button from "../components/Button";
+import styled from "styled-components";
+import Input from "../components/Input";
 
-const LoginPage = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
   height: 100vh;
 `;
 
-const GraySquare = styled.div`
-  background-color: #f5f5f5; /* Fundo cinza */
-  border-radius: 10px;
-  padding: 2%; /* Use uma unidade de medida relativa, como porcentagem */
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  width: 80%; /* Use uma largura relativa para manter a adaptabilidade */
-  max-width: 400px; /* Defina uma largura máxima para evitar que o conteúdo fique muito largo em telas grandes */
-`;
-
-const LoginTitle = styled.h2`
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: #007bff; /* Cor do texto azul */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-`;
-
-const InputField = styled.div`
-  margin-bottom: 20px;
-  text-align: center;
-`;
-
-const InputLabel = styled.label`
-  display: block;
-  margin-bottom: 5px;
-  font-size: 16px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
+const Content = styled.div`
+  gap: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0 1px 2px #0008;
+  background-color: white;
+  max-width: 350px;
+  padding: 20px;
   border-radius: 5px;
-  font-size: 16px;
 `;
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
+const Label = styled.label`
   font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+`;
+
+const LabelSignup = styled.label`
+  font-size: 16px;
+  color: #676767;
+`;
+
+const labelError = styled.label`
+  font-size: 14px;
+  color: red;
+`;
+
+const Strong = styled.strong`
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+    color: #676767;
+  }
 `;
 
 const Login = () => {
@@ -80,46 +78,33 @@ const Login = () => {
   };
 
   return (
-    <LoginPage>
-      <GraySquare>
-        <LoginTitle>Login</LoginTitle>
-        <form>
-          <InputField>
-            <InputLabel htmlFor="username">Usuário ou E-mail</InputLabel>
-            <Input
-              type="email"
-              id="username"
-              value={email}
-              onChange={(e) => [setEmail(e.target.value), setError("")]}
-              aria-label="Usuário ou E-mail"
-              placeholder='Seu Email'
-            />
-          </InputField>
-          <InputField>
-            <InputLabel htmlFor="password">Senha</InputLabel>
-            <Input
-              type="password"
-              id="password"
-              value={senha}
-              onChange={(e) => [setSenha(e.target.value), setError("")]}
-              aria-label="Senha"
-              placeholder='Senha'
-            />
-          </InputField>
-          <Button type="submit" onClick={handleLogin}>Entrar</Button>
-        </form>
-        <p>
-          <a href="/esqueci-senha" style={{ color: '#007bff' }}>
-            Esqueci minha senha
-          </a>{' '}
-          |{' '}
-          <a href="/cadastre-se" style={{ color: '#007bff' }}>
-            Cadastre-se
-          </a>
-        </p>
-      </GraySquare>
-    </LoginPage>
+    <Container>
+      <Label>Olá, seja bem vindo(a)!</Label>
+      <Label>Informe abaixo seus dados de acesso:</Label>
+      <Content>
+        <Input
+          type="email"
+          placeholder="Digite seu e-mail"
+          value={email}
+          onChange={(e) => [setEmail(e.target.value), setError("")]}
+        />
+        <Input
+          type="password"
+          placeholder="Digite sua senha"
+          value={senha}
+          onChange={(e) => [setSenha(e.target.value), setError("")]}
+        />
+        <labelError>{error}</labelError>
+        <Button Text="Entrar" onClick={handleLogin} />
+        <LabelSignup>
+          Não tem uma conta?
+          <Strong>
+            <Link to="/cadastre-se">&nbsp;Registre-se</Link>
+          </Strong>
+        </LabelSignup>
+      </Content>
+    </Container>
   );
-}
+};
 
 export default Login;

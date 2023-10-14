@@ -11,7 +11,9 @@ import Sobre from './Pages/Sobre';
 import Login from './Pages/Login';
 import ForgotPassword from './Pages/EsqueciSenha';
 import Cadastro from './Pages/Cadastro';
+import CadastroEstabelecimento from './Pages/CadastroEstabelecimento'
 import HomeUser from './Pages/HomeUsuario';
+import { AuthProvider } from './Contexts/auth';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,6 +44,7 @@ const Private = ({ Item }) => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <GlobalStyle />
     <BrowserRouter>
       <Header />
@@ -52,8 +55,10 @@ root.render(
         <Route path="/login" element={<Login />} />
         <Route path="/esqueci-senha" element={<ForgotPassword />} />
         <Route path='/cadastre-se' element={<Cadastro />} />
+        <Route path='/cadastro-estabelecimento' element={<CadastroEstabelecimento />} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
 

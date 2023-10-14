@@ -72,10 +72,10 @@ const Select = styled.select`
     border: none;
 `;
 
-const Signup = () => {
-  const [nome, setNome] = useState("");
-  const [enderecoUsuario, setenderecoUsuario] = useState("");
-  const [email, setEmail] = useState("");
+const SignupEstabelecimento = () => {
+  const [nomeEstabelecimento, setNomeEstabelecimento] = useState("");
+  const [enderecoEstabelecimento, setenderecoEstabelecimento] = useState("");
+  const [emailEstabelecimento, setEmailEstabelecimento] = useState("");
   const [emailConf, setEmailConf] = useState("");
   const [senha, setSenha] = useState("");
   const [selectedOptionAcessibilidade, setSelectedOptionAcessibilidade] = useState('');
@@ -86,15 +86,15 @@ const Signup = () => {
   const { signup } = useAuth();
 
   const handleSignup = () => {
-    if (!email | !emailConf | !senha | !nome | !enderecoUsuario) {
+    if (!emailEstabelecimento | !emailConf | !senha | !nomeEstabelecimento | !enderecoEstabelecimento) {
       setError("Preencha todos os campos");
       return;
-    } else if (email !== emailConf) {
+    } else if (emailEstabelecimento !== emailConf) {
       setError("Os e-mails não são iguais");
       return;
     }
 
-    const res = signup(email, senha);
+    const res = signup(emailEstabelecimento, senha);
 
     if (res) {
       setError(res);
@@ -120,18 +120,18 @@ const Signup = () => {
       <Content>
         <InputLogin
           type="nome"
-          placeholder="Digite seu Nome"
-          value={nome}
-          onChange={(e) => [setNome(e.target.value), setError("")]}
+          placeholder="Digite o Nome do Estabelecimento"
+          value={nomeEstabelecimento}
+          onChange={(e) => [setNomeEstabelecimento(e.target.value), setError("")]}
         />
         <InputLogin
           type="endereço"
-          placeholder="Digite seu Endereço"
-          value={enderecoUsuario}
-          onChange={(e) => [setenderecoUsuario(e.target.value), setError("")]}
+          placeholder="Digite o Endereço do Estabelecimento"
+          value={enderecoEstabelecimento}
+          onChange={(e) => [setenderecoEstabelecimento(e.target.value), setError("")]}
         />
         <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
-          <option value="" disabled>Selecione o Tipo de Acessibilidade</option>
+          <option value="" disabled>Selecione Acessibilidade Atendida</option>
           <option value="Opção1">Acessibilidade arquitetônica</option>
           <option value="Opção2">Acessibilidade comunicacional</option>
           <option value="Opção3">Acessibilidade atitudinal</option>
@@ -147,8 +147,8 @@ const Signup = () => {
         <InputLogin
           type="email"
           placeholder="Digite seu E-mail"
-          value={email}
-          onChange={(e) => [setEmail(e.target.value), setError("")]}
+          value={emailEstabelecimento}
+          onChange={(e) => [setEmailEstabelecimento(e.target.value), setError("")]}
         />
         <InputLogin
           type="email"
@@ -170,15 +170,9 @@ const Signup = () => {
             <Link to="/login">&nbsp;Entre</Link>
           </Strong>
         </LabelSignin>
-        <LabelSignin>
-          Cadastrar como estabelecimento?
-          <Strong>
-            <Link to="/cadastro-estabelecimento">&nbsp;Cadastre-se</Link>
-          </Strong>
-        </LabelSignin>
       </Content>
     </Container>
   );
 };
 
-export default Signup;
+export default SignupEstabelecimento;
