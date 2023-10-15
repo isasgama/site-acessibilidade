@@ -111,18 +111,12 @@ const Restaurante = () => {
             <CardContainer>
                 <Content>
                     <Title>Acessibilidade Disponível</Title>
-                    <Texto>Vagas Exclusivas
+                    <Texto>
+                    Vagas Exclusivas
                     Cardápios em braille
                     Rampas de acesso
                     Linguagem de sinais
-                    rotan Fiy
-                    Localização e contato
-                    Feijoada da Vóvó
-                    Directions
-                    los do mapa 500 m
-                    Termos de Uso
-                    Rua das Acácias, 124
-                    91000-000</Texto>
+                    </Texto>
                 </Content>
             </CardContainer>
         </Container>
