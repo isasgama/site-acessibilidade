@@ -52,7 +52,7 @@ function OpcoesHeader( ) {
   
   return (
     <OpcoesNav>
-      {textoOpcoes.map(({ texto, descricao, icone }) => (
+      {textoOpcoes.map(({ texto, descricao }) => (
         <NavLink
           to={texto.toLowerCase() === 'início' ? '/' : `/${texto.toLowerCase()}`}
           key={texto}

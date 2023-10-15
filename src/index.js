@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle } from 'styled-components'
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Fragment } from "react";
-import useAuth from "../src/Hooks/useAuth";
+import useAuth from "./Hooks/useAuth";
 import Header from './components/Header'
 import Home from './Pages/Home';
 import Sobre from './Pages/Sobre';
@@ -13,6 +12,7 @@ import ForgotPassword from './Pages/EsqueciSenha';
 import Cadastro from './Pages/Cadastro';
 import CadastroEstabelecimento from './Pages/CadastroEstabelecimento'
 import HomeUser from './Pages/HomeUsuario';
+import HomeEstabelecimento from './Pages/HomeEstabelecimento';
 import { AuthProvider } from './Contexts/auth';
 
 const GlobalStyle = createGlobalStyle`
@@ -51,6 +51,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route exact path="/home" element={<Private Item={HomeUser} />} />
+        <Route exact path="/estabelecimento" element={<Private Item={HomeEstabelecimento} />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/login" element={<Login />} />
         <Route path="/esqueci-senha" element={<ForgotPassword />} />

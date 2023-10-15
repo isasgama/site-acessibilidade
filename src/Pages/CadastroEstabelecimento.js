@@ -102,7 +102,7 @@ const SignupEstabelecimento = () => {
     }
 
     alert("Usuário cadatrado com sucesso!");
-    navigate("/");
+    navigate("/login");
   };
 
   const handleSelectChange = (e) => {
