@@ -13,6 +13,7 @@ import Cadastro from './Pages/Cadastro';
 import CadastroEstabelecimento from './Pages/CadastroEstabelecimento'
 import HomeUser from './Pages/HomeUsuario';
 import HomeEstabelecimento from './Pages/HomeEstabelecimento';
+import Restaurante from './Pages/Restaurante';
 import { AuthProvider } from './Contexts/auth';
 
 const GlobalStyle = createGlobalStyle`
@@ -53,6 +54,7 @@ root.render(
         <Route exact path="/home" element={<Private Item={HomeUser} />} />
         <Route exact path="/estabelecimento" element={<Private Item={HomeEstabelecimento} />} />
         <Route path="/sobre" element={<Sobre />} />
+        <Route path="/restaurantes" element={<Restaurante />} />
         <Route path="/login" element={<Login />} />
         <Route path="/esqueci-senha" element={<ForgotPassword />} />
         <Route path='/cadastre-se' element={<Cadastro />} />
