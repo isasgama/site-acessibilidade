@@ -74,6 +74,7 @@ const Select = styled.select`
 
 const Signup = () => {
   const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [enderecoUsuario, setenderecoUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [emailConf, setEmailConf] = useState("");
@@ -129,6 +130,12 @@ const Signup = () => {
           placeholder="Digite seu Endereço"
           value={enderecoUsuario}
           onChange={(e) => [setenderecoUsuario(e.target.value), setError("")]}
+        />
+        <InputLogin
+          type="telefone"
+          placeholder="Digite seu Telefone"
+          value={telefone}
+          onChange={(e) => [setTelefone(e.target.value), setError("")]}
         />
         <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
           <option value="" disabled>Selecione o Tipo de Acessibilidade</option>
