@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import useAuth from '../Hooks/useAuth';
 import ButtonLogin from '../components/Button';
+import HomeEstabelecimento from './HomeEstabelecimento';
 
 export const Container = styled.div`
   display: flex;
