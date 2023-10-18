@@ -1,22 +1,93 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  height: 120vh;
+
+  @media (max-width: 800px) {
+    height: 90vh;
+  }
+
+  @media (max-width: 480px) {
+    height: 130vh;
+  }
+`;
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px #0008;
+`;
+
+const Label = styled.label`
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+`;
+
+const CardItem = styled.div`
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+`;
 
 function EnderecosCadastrados() {
-  // Guarda e atualiza as informações recebidas do backend.
   const [result, setResult] = useState([]);
 
-  // Faz a solicitação das informações no backend quando a página é carrgada.
   useEffect(() => {
     fetch("http://localhost:3002")
       .then((res) => res.json())
       .then((data) => {
         setResult(data);
-        console.log(data);
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
+
+  return (
+    <Container className="results">
+      <Card>
+        <Label className="title_results">Endereços Cadastrados</Label>
+        {result.map((item, index) => (
+          <CardItem key={index}>
+            <Label className="p_results">Nome</Label>
+            <p className="product_result">{item.EstabelecimentoName}</p>
+            <Label className="p_results">Endereço</Label>
+            <p className="product_result">{item.Endereco}</p>
+            <Label className="p_results">Acessibilidade</Label>
+            <p className="product_result">{item.Acessibilidade}</p>
+            <Label className="p_results">Telefone</Label>
+            <p className="product_result">{item.Telefone}</p>
+            <div className="div_buttons_results">
+              <Link to={`/modify/${item.EstabelecimentoID}`}>
+                <button className="modify_results">Alterar Local</button>
+              </Link>
+            </div>
+          </CardItem>
+        ))}
+      </Card>
+    </Container>
+  );
+}
+
+export default EnderecosCadastrados;
+
+
 
 //   const handleDelete = (e) => {
 //     console.log(e.target.name);
@@ -38,26 +109,7 @@ function EnderecosCadastrados() {
 //     }
 //   };
 
-  return (
-    <div className="results">
-      <h1 className="title_results">Endereços</h1>
-      <section className="section_all_results">
-        {result.map((item, index) => (
-          <section key={index} className="section_individual_result">
-            <article>
-              <p className="p_results">Nome</p>
-              <p className="product_result">{item.EstabelecimentoName}</p>
-              <p className="p_results">Endereço</p>
-              <p className="product_result">{item.Endereco}</p>
-              <p className="p_results">Acessibilidade</p>
-              <p className="product_result">{item.Acessibilidade}</p>
-              <p className="p_results">Telefone</p>
-              <p className="product_result">{item.Telefone}</p>
-            </article>
-            <div className="div_buttons_results">
-              <Link to={`/modify/${item.EstabelecimentoID}`}>
-                <button className="modify_results">Alterar Local</button>
-              </Link>
+
               {/* <button
                 name={item.EstabelecimentoID}
                 onClick={handleDelete}
@@ -65,12 +117,3 @@ function EnderecosCadastrados() {
               >
                 Excluir
               </button> */}
-            </div>
-          </section>
-        ))}
-      </section>
-    </div>
-  );
-}
-
-export default EnderecosCadastrados;

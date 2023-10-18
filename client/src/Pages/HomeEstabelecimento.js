@@ -3,17 +3,68 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import useAuth from '../Hooks/useAuth';
-import ButtonLogin from '../components/Button';
+import InputLogin from "../components/Input";
 import EnderecosCadastrados from "./EnderecosCadastrados";
 
-// export const Container = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: column;
-//   height: 100vh;
-//   gap: 20px;
-// `;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+
+  @media (max-width: 600px) {
+    align-items: center; /* Centralizar verticalmente em telas menores */
+    flex-direction: column; /* Empilhar os cards verticalmente em telas menores */
+    max-width: 100%;
+    margin: auto;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0 1px 2px #0008;
+  background-color: white;
+  max-width: 350px;
+  padding: 20px;
+  border-radius: 5px;
+  
+`;
+
+const Label = styled.label`
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+`;
+
+const Input = styled.input`
+  outline: none;
+  padding: 16px 20px;
+  width: 90%;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 2px;
+
+  background-color: #f0f2f5;
+  border: none;
+`;
+
+const Button = styled.button`
+  padding: 16px 20px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  width: 30%;
+  cursor: pointer;
+  background-color: #046ee5;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  max-width: 350px;
+  margin: 5px;
+`;
 
 export const Title = styled.h2``;
 
@@ -90,29 +141,31 @@ function HomeEstabelecimento() {
   };
 
   return (
-    <div className="form_div">
+    <Container>
+      <Content>
+      <Label> CADASTRE SEU LOCAL COM ACESSIBILIDADE </Label>
       <form onSubmit={handleSubmit} className="form">
-        <input
+        <Input
           className="form_input"
           type="text"
           value={dataToInsert.EstabelecimentoName}
           name="EstabelecimentoName"
           onChange={handleChange}
-          placeholder="Estabelecimento Name"
+          placeholder="Nome do Estabelecimento"
           required
           autoComplete="none"
         />
-        <input
+        <Input
           className="form_input"
           type="text"
           value={dataToInsert.Endereco}
           name="Endereco"
           onChange={handleChange}
-          placeholder="Endereco"
+          placeholder="Endereço"
           required
           autoComplete="none"
         />
-        <input
+        <Input
           className="form_input"
           type="text"
           value={dataToInsert.Acessibilidade}
@@ -122,7 +175,7 @@ function HomeEstabelecimento() {
           required
           autoComplete="none"
         />
-        <input
+        <Input
           className="form_input"
           type="text"
           value={dataToInsert.Telefone}
@@ -132,10 +185,11 @@ function HomeEstabelecimento() {
           required
           autoComplete="none"
         />
-        <button className="form_button">Save</button>
+        <Button Text="Save" className="form_button">Save</Button>
       </form>
+      </Content>
       <EnderecosCadastrados/>
-    </div>
+    </Container>
   );
 }
 
