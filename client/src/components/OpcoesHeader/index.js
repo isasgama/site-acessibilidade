@@ -48,7 +48,7 @@ const textoOpcoes = [
 ];
 
 function OpcoesHeader( ) {
-  const { signed } = useAuth();
+  const { signed, establishment } = useAuth();
   
   return (
     <OpcoesNav>
@@ -62,9 +62,22 @@ function OpcoesHeader( ) {
         >
           {texto.toLowerCase() === 'login' && signed ? null : (
             <Opcao>
-              {texto === 'Home' && !signed ? null : ( // Não renderiza a opção "Home" se o usuário não estiver logado
+              {texto === 'Home' && !signed ? null : (
                 <>
-                  {texto === 'Home' ? <Opcao>Minha Conta</Opcao> : texto}
+                  {texto === 'Home' ? (
+                    <Opcao>
+                      {establishment ? ( // Verifica se o usuário é estabelecimento
+                        <NavLink to="/estabelecimento"
+                        style={{ textDecoration: 'none', color: '#666' }}
+                        >
+                          Minha Conta</NavLink> // Redireciona para a página /estabelecimento
+                      ) : (
+                        "Minha Conta"
+                      )}
+                    </Opcao>
+                  ) : (
+                    texto
+                  )}
                 </>
               )}
             </Opcao>

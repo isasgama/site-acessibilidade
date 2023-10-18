@@ -83,7 +83,7 @@ const SignupEstabelecimento = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { signup } = useAuth();
+  const { signupEstablishment } = useAuth();
 
   const handleSignup = () => {
     if (!emailEstabelecimento | !emailConf | !senha | !nomeEstabelecimento | !enderecoEstabelecimento) {
@@ -94,7 +94,7 @@ const SignupEstabelecimento = () => {
       return;
     }
 
-    const res = signup(emailEstabelecimento, senha);
+    const res = signupEstablishment(emailEstabelecimento, senha);
 
     if (res) {
       setError(res);
@@ -102,7 +102,7 @@ const SignupEstabelecimento = () => {
     }
 
     alert("Usuário cadatrado com sucesso!");
-    navigate("/login");
+    navigate("/login-estabelecimento");
   };
 
   const handleSelectChange = (e) => {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../Hooks/useAuth";
 import Button from "../components/Button";
 import styled from "styled-components";
 import Input from "../components/Input";
+import useAuth from "../Hooks/useAuth";
 
 const Container = styled.div`
   display: flex;
@@ -53,8 +53,8 @@ const Strong = styled.strong`
   }
 `;
 
-const Login = () => {
-  const { signin } = useAuth();
+const LoginEstabelecimento = () => {
+  const { signinEstablishment } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -67,20 +67,21 @@ const Login = () => {
       return;
     }
 
-    const res = signin(email, senha);
+    const res = signinEstablishment(email, senha);
 
     if (res) {
       setError(res);
       return;
     }
 
-    navigate("/home");
+    navigate("/estabelecimento");
   };
 
   return (
     <Container>
       <Label>Olá, seja bem vindo(a)!</Label>
-      <Label>Informe abaixo seus dados de acesso:</Label>
+      <Label>Informe abaixo seus dados de acesso</Label>
+      <Label>para a conta do Estabelecimento:</Label>
       <Content>
         <Input
           type="email"
@@ -99,13 +100,7 @@ const Login = () => {
         <LabelSignup>
           Não tem uma conta?
           <Strong>
-            <Link to="/cadastre-se">&nbsp;Registre-se</Link>
-          </Strong>
-        </LabelSignup>
-        <LabelSignup>
-          Entrar como Estabelecimento?
-          <Strong>
-            <Link to="/login-estabelecimento">&nbsp;Clique aqui</Link>
+            <Link to="/cadastro-estabelecimento">&nbsp;Registre-se</Link>
           </Strong>
         </LabelSignup>
       </Content>
@@ -113,4 +108,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginEstabelecimento;
