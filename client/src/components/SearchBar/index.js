@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const SearchContainer = styled.form`
@@ -37,24 +37,28 @@ const SearchResultItem = styled.li`
 `;
 
 function SearchBar({ onSearch }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [data, setData] = useState([]);
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('');
 
-  const handleChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearch = () => {
+    fetch(`http://localhost:3001/search?query=${query}&filter=${filter}`)
+      .then((response) => response.json())
+      .then((data) => setData(data));
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault(); // Evita a recarga da página ao pressionar "Enter"
-    onSearch(searchTerm);
-  };
+
+  // const handleChange = (e) => {
+  //   setSearchTerm(e.target.value);
+  // };
 
   return (
     <SearchContainer onSubmit={handleSearch} aria-label="Pesquisar Locais">
       <SearchInput
         type="text"
         placeholder="Pesquisar Locais..."
-        value={searchTerm}
-        onChange={handleChange}
+        // value={searchTerm}
+        // onChange={handleChange}
       />
       <SearchButton type="submit">Buscar</SearchButton>
       <SearchResults aria-live="polite"> {/* Indique que os resultados são dinâmicos */}

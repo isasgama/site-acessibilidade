@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import { useState } from 'react';
-import backgroundImage from '../images/feijoada.jpg'
+import { useState, useEffect } from 'react';
+import backgroundImage from '../images/locais.jpg'
 
 
 const Container = styled.div`
@@ -79,25 +79,38 @@ const VerMaisButton = styled.button`
   cursor: pointer;
 `;
 
-const Restaurante = () => {
+const Locais = () => {
     const [expanded, setExpanded] = useState(false);
+    const [result, setResult] = useState([]);
 
     const toggleText = () => {
         setExpanded(!expanded);
     };
 
+    useEffect(() => {
+      fetch("http://localhost:3002")
+        .then((res) => res.json())
+        .then((data) => {
+          setResult(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }, []);
+
     return (
         <Container>
-            <CardContainer>
+          {result.map((item, index) => (
+            <CardContainer key={index}>
                 <Content>
-                    <Title>Feijoada da Vovó</Title>
+                    <Title>{item.EstabelecimentoName}</Title>
                     <Rating>✰✰✰✰✰ 10 avaliações</Rating>
-                    <Address>& Rua das Acácias, 124 - São Paulo, Estado de São Paulo 02478-900 Brasil 91000-000</Address>
+                    <Address>{item.Endereco}</Address>
                     <Imagem src={backgroundImage} alt="Imagem de uma feijoada bem suculenta" />
-                </Content>
-            </CardContainer>
-            <CardContainer>
-                <Content>
+                    <Title>Acessibilidade Disponível</Title>
+                    <Texto>{item.Acessibilidade}</Texto>
+                    <Title>Telefone</Title>
+                    <Texto>{item.Telefone}</Texto>
                     <Title>Pontuações e Avaliações</Title>
                     <Rating>4,0 ✰✰✰✰✰ 10 avaliações</Rating>
                     <TextContainer expanded={expanded}>
@@ -108,19 +121,9 @@ const Restaurante = () => {
                     {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>}
                 </Content>
             </CardContainer>
-            <CardContainer>
-                <Content>
-                    <Title>Acessibilidade Disponível</Title>
-                    <Texto>
-                    Vagas Exclusivas
-                    Cardápios em braille
-                    Rampas de acesso
-                    Linguagem de sinais
-                    </Texto>
-                </Content>
-            </CardContainer>
-        </Container>
+             ))}        
+           </Container>
     );
 }
 
-export default Restaurante;
+export default Locais;

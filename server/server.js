@@ -39,6 +39,39 @@ const search = (callback) => {
     });
 };
 
+const filterData = (name, accessibility, callback) => {
+    let sql = "SELECT * FROM Local";
+    let params = [];
+
+    if (!name && !accessibility) {
+        callback([]); // Retorna uma lista vazia se nenhum filtro for fornecido
+        return;
+    }
+
+    sql += " WHERE ";
+    let conditions = [];
+
+    if (name) {
+        conditions.push("EstabelecimentoName LIKE ?");
+        params.push(`%${name}%`);
+    }
+
+    if (accessibility) {
+        conditions.push("Acessibilidade = ?");
+        params.push(accessibility);
+    }
+
+    sql += conditions.join(" AND ");
+
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            console.error(err);
+        } else {
+            callback(rows);
+        }
+    });
+};
+
 // Prepara uma consulta para adicionar dados ao nosso bd.
 const insertData = db.prepare(
     `INSERT INTO Local (EstabelecimentoName, Endereco, Acessibilidade, Telefone)
@@ -92,6 +125,16 @@ const server = http.createServer((req, res) => {
         res.end();
     });
 
+    if (req.method === "GET") {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const name = url.searchParams.get("name");
+        const accessibility = url.searchParams.get("accessibility");
+
+        filterData(name, accessibility, (result) => {
+            res.write(JSON.stringify(result));
+            res.end();
+        });
+    }
 
     // Verifica se é uma solicitação com o método POST.
     if (req.method === "POST") {

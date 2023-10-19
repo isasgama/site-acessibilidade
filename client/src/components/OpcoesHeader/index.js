@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 
 const Opcao = styled.li`
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,9 +40,8 @@ const OpcoesNav = styled.nav`
 const textoOpcoes = [
   { texto: 'Início', descricao: 'Página inicial'},
   { texto: 'Sobre', descricao: 'Sobre nós' },
-  { texto: 'Restaurantes', descricao: 'Nossos restaurantes' },
   { texto: 'Locais', descricao: 'Nossos locais' },
-  { texto: 'Lazer', descricao: 'Atividades de lazer' },
+  { texto: 'Busca', descricao: 'Busque Locais com acessibilidade' },
   { texto: 'Login', descricao: 'Entrar na sua conta' },
   { texto: 'Home', descricao: 'Página do usuário'}
 ];

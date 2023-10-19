@@ -82,16 +82,16 @@ function Home() {
               <CardDescription>Descubra locais acessíveis</CardDescription>
             </Card>
           </NavLink>
-          <NavLink to="/restaurantes" style={{ textDecoration: 'none' }}>
-            <Card role="link" aria-label="Explore restaurantes inclusivos">
-              <CardTitle>Restaurantes</CardTitle>
-              <CardDescription>Explore restaurantes inclusivos</CardDescription>
+          <NavLink to="/sobre" style={{ textDecoration: 'none' }}>
+            <Card role="link" aria-label="Saiba mais sobre o nosso site">
+              <CardTitle>Sobre</CardTitle>
+              <CardDescription>Saiba mais sobre o nosso site</CardDescription>
             </Card>
           </NavLink>
-          <NavLink to="/lazer" style={{ textDecoration: 'none' }}>
-            <Card role="link" aria-label="Encontre atividades de lazer acessíveis">
-              <CardTitle>Lazer</CardTitle>
-              <CardDescription>Encontre atividades de lazer acessíveis</CardDescription>
+          <NavLink to="/busca" style={{ textDecoration: 'none' }}>
+            <Card role="link" aria-label="Busque Locais com Acessibilidade">
+              <CardTitle>Busca</CardTitle>
+              <CardDescription>Busque locais com acessibilidade</CardDescription>
             </Card>
           </NavLink>
         </CardsContainer>
