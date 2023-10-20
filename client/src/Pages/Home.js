@@ -88,10 +88,10 @@ function Home() {
               <CardDescription>Saiba mais sobre o nosso site</CardDescription>
             </Card>
           </NavLink>
-          <NavLink to="/busca" style={{ textDecoration: 'none' }}>
-            <Card role="link" aria-label="Busque Locais com Acessibilidade">
-              <CardTitle>Busca</CardTitle>
-              <CardDescription>Busque locais com acessibilidade</CardDescription>
+          <NavLink to="/login" style={{ textDecoration: 'none' }}>
+            <Card role="link" aria-label="Acesse sua página ou cadastre-se">
+              <CardTitle>Login</CardTitle>
+              <CardDescription>Acesse sua página ou cadastre-se</CardDescription>
             </Card>
           </NavLink>
         </CardsContainer>

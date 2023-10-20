@@ -15,8 +15,9 @@ import HomeUser from './Pages/HomeUsuario';
 import HomeEstabelecimento from './Pages/HomeEstabelecimento';
 import Locais from './Pages/Locais';
 import LoginEstabelecimento from './Pages/LoginEstabelecimento'
+import EnderecosCadastrados from './Pages/EnderecosCadastrados';
+import CadastrarLocais from './Pages/CadastrarLocais';
 import { AuthProvider } from './Contexts/auth';
-import Busca from './Pages/Busca';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -55,10 +56,11 @@ root.render(
         <Route path="/" element={<Home />} />
         <Route exact path="/home" element={<Private Item={HomeUser} />} />
         <Route exact path="/estabelecimento" element={<Private Item={HomeEstabelecimento} />} />
+        <Route path="/enderecos" element={<Private Item={EnderecosCadastrados} />} />
+        <Route path="/cadastrar-enderecos" element={<Private Item={CadastrarLocais} />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/busca" element={<Busca />} />
         <Route path="/login-estabelecimento" element={<LoginEstabelecimento />} />
         <Route path="/esqueci-senha" element={<ForgotPassword />} />
         <Route path='/cadastre-se' element={<Cadastro />} />

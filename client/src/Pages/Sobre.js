@@ -55,7 +55,7 @@ function Sobre() {
       <Overlay>
         <Titulo>Sobre o EasyAccess</Titulo>
         <Texto>
-          O EazyAccess é uma plataforma dedicada à acessibilidade e inclusão. Nosso propósito é fornecer informações precisas e detalhadas sobre locais e estabelecimentos que possuem estrutura adequada para atender às necessidades das pessoas com deficiência. Isso inclui restaurantes com rampas de acesso, academias com equipamentos adaptados, bancos com funcionários capacitados em libras e muito mais.
+          O EazyAccess é uma plataforma dedicada à acessibilidade e inclusão. Nosso propósito é fornecer informações sobre locais e estabelecimentos que possuem estrutura adequada para atender às necessidades das pessoas com deficiência. Isso inclui restaurantes com rampas de acesso, academias com equipamentos adaptados, bancos com funcionários capacitados em libras e muito mais.
         </Texto>
         <Texto>
           Acreditamos que a acessibilidade é um direito fundamental e que todas as pessoas merecem participar plenamente da vida social e realizar suas atividades cotidianas com facilidade. Além disso, a conscientização sobre a importância da acessibilidade é essencial, e nosso site também contribui para sensibilizar estabelecimentos e locais públicos sobre essa questão vital.

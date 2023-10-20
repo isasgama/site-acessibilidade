@@ -41,7 +41,6 @@ const textoOpcoes = [
   { texto: 'Início', descricao: 'Página inicial'},
   { texto: 'Sobre', descricao: 'Sobre nós' },
   { texto: 'Locais', descricao: 'Nossos locais' },
-  { texto: 'Busca', descricao: 'Busque Locais com acessibilidade' },
   { texto: 'Login', descricao: 'Entrar na sua conta' },
   { texto: 'Home', descricao: 'Página do usuário'}
 ];

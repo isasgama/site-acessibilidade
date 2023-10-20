@@ -11,14 +11,14 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  height: 120vh;
+  height: 100vh;
 
   @media (max-width: 800px) {
     height: 90vh;
   }
   
   @media (max-width: 480px) {
-    height: 130vh;
+    height: 90vh;
   }
 `;
 
@@ -105,14 +105,14 @@ const SignupEstabelecimento = () => {
     navigate("/login-estabelecimento");
   };
 
-  const handleSelectChange = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === 'Outra') {
-      // Se o usuário selecionar "Outra", exibe o campo de texto.
-      setCustomOption('');
-    }
-    setSelectedOptionAcessibilidade(selectedValue);
-  };
+  // const handleSelectChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   if (selectedValue === 'Outra') {
+  //     // Se o usuário selecionar "Outra", exibe o campo de texto.
+  //     setCustomOption('');
+  //   }
+  //   setSelectedOptionAcessibilidade(selectedValue);
+  // };
 
   return (
     <Container>
@@ -130,7 +130,7 @@ const SignupEstabelecimento = () => {
           value={enderecoEstabelecimento}
           onChange={(e) => [setenderecoEstabelecimento(e.target.value), setError("")]}
         />
-        <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
+        {/* <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
           <option value="" disabled>Selecione Acessibilidade Atendida</option>
           <option value="Opção1">Acessibilidade arquitetônica</option>
           <option value="Opção2">Acessibilidade comunicacional</option>
@@ -143,7 +143,7 @@ const SignupEstabelecimento = () => {
           placeholder="Descreva o Tipo de Acessibilidade"
           value={customOption}
           onChange={(e) => setCustomOption(e.target.value)}
-        />)}
+        />)} */}
         <InputLogin
           type="email"
           placeholder="Digite seu E-mail"

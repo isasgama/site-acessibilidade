@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center; /* Centralizar horizontalmente */
   margin-bottom: 20px;
+  gap: 5px;
 
   @media (max-width: 600px) {
     align-items: center; /* Centralizar verticalmente em telas menores */
@@ -79,26 +80,70 @@ const VerMaisButton = styled.button`
   cursor: pointer;
 `;
 
+const SearchInput = styled.input`
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+`;
+
 const Locais = () => {
-    const [expanded, setExpanded] = useState(false);
-    const [result, setResult] = useState([]);
+  const [expanded, setExpanded] = useState(false);
+  const [result, setResult] = useState([]);
+  const [nameFilter, setNameFilter] = useState('');
+  const [addressFilter, setAddressFilter] = useState('');
+  const [accessibilityFilter, setAccessibilityFilter] = useState('');
 
-    const toggleText = () => {
-        setExpanded(!expanded);
-    };
+  const toggleText = () => {
+      setExpanded(!expanded);
+  };
 
-    useEffect(() => {
-      fetch("http://localhost:3002")
-        .then((res) => res.json())
-        .then((data) => {
-          setResult(data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }, []);
+  const fetchData = () => {
+    let url = `http://localhost:3002/`;
 
-    return (
+    const params = new URLSearchParams();
+    if (nameFilter) params.append('name', nameFilter);
+    if (addressFilter) params.append('endereco', addressFilter);
+    if (accessibilityFilter) params.append('accessibility', accessibilityFilter);
+
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setResult(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  return (
+      <div>
+        <div>
+          <Container>
+              <SearchInput
+                  type="text" 
+                  placeholder="Nome do Estabelecimento" 
+                  value={nameFilter}
+                  onChange={(e) => setNameFilter(e.target.value)}
+              />
+              <SearchInput 
+                  type="text" 
+                  placeholder="Endereço" 
+                  value={addressFilter}
+                  onChange={(e) => setAddressFilter(e.target.value)}
+              />
+              <select value={accessibilityFilter} onChange={(e) => setAccessibilityFilter(e.target.value)}>
+                  <option value="">Todas Acessibilidades</option>
+                  <option value="Acessível">Acessível</option>
+                  <option value="Não Acessível">Não Acessível</option>
+              </select>
+              <button onClick={fetchData}>Filtrar</button>
+              </Container>
+          </div>
         <Container>
           {result.map((item, index) => (
             <CardContainer key={index}>
@@ -123,6 +168,7 @@ const Locais = () => {
             </CardContainer>
              ))}        
            </Container>
+      </div>
     );
 }
 

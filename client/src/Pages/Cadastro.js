@@ -11,14 +11,14 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  height: 135vh;
+  height: 100vh;
 
   @media (max-width: 800px) {
-    height: 90vh;
+    height: 100vh;
   }
   
   @media (max-width: 480px) {
-    height: 130vh;
+    height: 90vh;
   }
 `;
 
@@ -79,7 +79,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailConf, setEmailConf] = useState("");
   const [senha, setSenha] = useState("");
-  const [selectedOptionAcessibilidade, setSelectedOptionAcessibilidade] = useState('');
+  // const [selectedOptionAcessibilidade, setSelectedOptionAcessibilidade] = useState('');
   const [customOption, setCustomOption] = useState('');
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -106,14 +106,14 @@ const Signup = () => {
     navigate("/");
   };
 
-  const handleSelectChange = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === 'Outra') {
-      // Se o usuário selecionar "Outra", exibe o campo de texto.
-      setCustomOption('');
-    }
-    setSelectedOptionAcessibilidade(selectedValue);
-  };
+  // const handleSelectChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   if (selectedValue === 'Outra') {
+  //     // Se o usuário selecionar "Outra", exibe o campo de texto.
+  //     setCustomOption('');
+  //   }
+  //   setSelectedOptionAcessibilidade(selectedValue);
+  // };
 
   return (
     <Container>
@@ -137,7 +137,7 @@ const Signup = () => {
           value={telefone}
           onChange={(e) => [setTelefone(e.target.value), setError("")]}
         />
-        <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
+        {/* <Select value={selectedOptionAcessibilidade} onChange={handleSelectChange}>
           <option value="" disabled>Selecione o Tipo de Acessibilidade</option>
           <option value="Opção1">Acessibilidade arquitetônica</option>
           <option value="Opção2">Acessibilidade comunicacional</option>
@@ -150,7 +150,7 @@ const Signup = () => {
           placeholder="Descreva o Tipo de Acessibilidade"
           value={customOption}
           onChange={(e) => setCustomOption(e.target.value)}
-        />)}
+        />)} */}
         <InputLogin
           type="email"
           placeholder="Digite seu E-mail"

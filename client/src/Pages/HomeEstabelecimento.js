@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import React from "react";
 import styled from "styled-components";
-import useAuth from '../Hooks/useAuth';
-import InputLogin from "../components/Input";
-import EnderecosCadastrados from "./EnderecosCadastrados";
+import backgroundImage from '../images/homeestab.jpg';
+import useAuth from "../Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-const Container = styled.div`
+const MenuContainer = styled.div`
+  background: url(${backgroundImage});
+  background-position: left;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 80px;
-
-  @media (max-width: 600px) {
-    align-items: center; /* Centralizar verticalmente em telas menores */
-    flex-direction: column; /* Empilhar os cards verticalmente em telas menores */
-    max-width: 100%;
-    margin: auto;
-  }
+  flex-direction: column;
+  gap: 10px;
+  height: 100vh;
+  background-color: #f0f0f0; /* Cor de fundo clara */
 `;
 
 const Content = styled.div`
+  gap: 15px;
   display: flex;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   width: 100%;
@@ -30,170 +30,67 @@ const Content = styled.div`
   max-width: 350px;
   padding: 20px;
   border-radius: 5px;
-  
 `;
 
-const Label = styled.label`
-  font-size: 16px;
-  font-weight: 600;
-  color: #000000;
+const MenuOption = styled.a`
+  text-decoration: none;
+  font-size: 24px;
+  margin: 10px;
+  color: black;
+  cursor: pointer;
+  padding: 10px 20px; /* Adicione preenchimento para as opções do menu */
+  border-radius: 5px; /* Adicione bordas arredondadas */
+  transition: background-color 0.3s; /* Efeito de transição de cor de fundo */
+
+  &:hover {
+    background-color: #0078d4; /* Cor de fundo azul quando hover */
+    color: #fff; /* Cor do texto branco quando hover */
+  }
 `;
 
-const Input = styled.input`
-  outline: none;
-  padding: 16px 20px;
-  width: 90%;
-  border-radius: 5px;
-  font-size: 16px;
-  margin: 2px;
-
-  background-color: #f0f2f5;
-  border: none;
-`;
+const HeaderTitle = styled.h1`
+  font-size: 36px;
+  margin: 10px 0;
+  text-shadow: 3px 2px 4px rgba(0, 0, 0, 1.9); /* Adicione um sombreamento de texto */
+  color: white;
+  `;
 
 const Button = styled.button`
   padding: 16px 20px;
   outline: none;
   border: none;
   border-radius: 5px;
-  width: 30%;
+  width: 20%;
   cursor: pointer;
   background-color: #046ee5;
   color: white;
   font-weight: 600;
   font-size: 16px;
   max-width: 350px;
-  margin: 5px;
 `;
 
-export const Title = styled.h2``;
 
-function HomeEstabelecimento() {
-  // Guarda as informações do formulário para enviar ao backend.
-  const [result, setResult] = useState([]);
-  const [dataToInsert, setDataToInsert] = useState({
-    EstabelecimentoName: "",
-    Endereco: "",
-    Acessibilidade: "",
-    Telefone: "",
-  });
-  const [redirected, setRedirected] = useState(false);
-
+function MainMenu() {
+  const { signout } = useAuth();
   const navigate = useNavigate();
 
-  //   Faz a solicitação das informações no backend quando a página é carregada.
-  useEffect(() => {
-    fetch("http://localhost:3002")
-      .then((res) => res.json())
-      .then((data) => {
-        setResult(data);
-        console.log(data)
-
-        // Procura o item com o mesmo EstabelecimentoID que o pathname.
-        const foundItem = data.find(
-          (item) => window.location.pathname === `/modify/${item.EstabelecimentoID}`
-        );
-
-        if (foundItem) {
-          setDataToInsert((prevState) => ({
-            ...prevState,
-            ...foundItem,
-          }));
-        } else {
-          // Se não encontrar o item, redireciona para a página principal.
-          if (!redirected) {
-            setRedirected(true);
-            navigate("/estabelecimento");
-          }
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  // Envia as informações para o backend quando o botão de enviar é clicado.
-  const handleSubmit = (e) => {
-    const foundItem = result.find(
-      (item) => window.location.pathname === `/modify/${item.EstabelecimentoID}`
-    );
-    if (foundItem) {
-      fetch("http://localhost:3002", {
-        method: "PUT",
-        body: JSON.stringify(dataToInsert),
-        headers: { "Content-Type": "application/json" },
-      });
-      navigate("/");
-    } else {
-      fetch("http://localhost:3002", {
-        method: "POST",
-        body: JSON.stringify(dataToInsert),
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-  };
-  // Armazena as informações no estado conforme são digitados.
-  const handleChange = (e) => {
-    setDataToInsert({
-      ...dataToInsert,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   return (
-    <Container>
+    <MenuContainer>
+      <HeaderTitle>Bem vindo(a) ao EasyAccess!</HeaderTitle>
       <Content>
-      <Label> CADASTRE SEU LOCAL COM ACESSIBILIDADE </Label>
-      <form onSubmit={handleSubmit} className="form">
-        <Input
-          className="form_input"
-          type="text"
-          value={dataToInsert.EstabelecimentoName}
-          name="EstabelecimentoName"
-          onChange={handleChange}
-          placeholder="Nome do Estabelecimento"
-          required
-          autoComplete="none"
-        />
-        <Input
-          className="form_input"
-          type="text"
-          value={dataToInsert.Endereco}
-          name="Endereco"
-          onChange={handleChange}
-          placeholder="Endereço"
-          required
-          autoComplete="none"
-        />
-        <Input
-          className="form_input"
-          type="text"
-          value={dataToInsert.Acessibilidade}
-          name="Acessibilidade"
-          onChange={handleChange}
-          placeholder="Acessibilidade"
-          required
-          autoComplete="none"
-        />
-        <Input
-          className="form_input"
-          type="text"
-          value={dataToInsert.Telefone}
-          name="Telefone"
-          onChange={handleChange}
-          placeholder="Telefone"
-          required
-          autoComplete="none"
-        />
-        <Button Text="Save" className="form_button">Save</Button>
-      </form>
+        <Link to="/cadastrar-enderecos">Cadastre locais acessíveis</Link>
+        <MenuOption href="/edite-seu-cadastro">Editar cadastro</MenuOption>
+        <MenuOption href="/enderecos">Editar locais acessíveis</MenuOption>
+        <Button Text="Sair" onClick={() => [signout(), navigate("/login")]}>
+          Sair
+        </Button>
       </Content>
-      <EnderecosCadastrados/>
-    </Container>
+    </MenuContainer>
   );
 }
 
-export default HomeEstabelecimento;
+export default MainMenu;
+
 
 
 {/* <Container>
