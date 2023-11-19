@@ -73,36 +73,40 @@ function EnderecosCadastrados() {
   };
 
   return (
-    <Container className="results">
-        <Label className="title_results">Endereços Cadastrados</Label>
+    <div>
+      <h2 style={{ textAlign: "center" }}>Endereços Cadastrados</h2>
+      <Container className="results">
         {result.map((item, index) => (
           <CardItem key={index}>
             <Card>
-            <Label className="p_results">Nome</Label>
-            <p className="product_result">{item.EstabelecimentoName}</p>
-            <Label className="p_results">Endereço</Label>
-            <p className="product_result">{item.Endereco}</p>
-            <Label className="p_results">Acessibilidade</Label>
-            <p className="product_result">{item.Acessibilidade}</p>
-            <Label className="p_results">Telefone</Label>
-            <p className="product_result">{item.Telefone}</p>
-            <div className="div_buttons_results">
-              <Link to={`/modify/${item.EstabelecimentoID}`}>
-                <button className="modify_results">Alterar Local</button>
-              </Link>
-              <button
-                name={item.EstabelecimentoID}
-                onClick={handleDelete}
-                className="delete_results"
-              >
-                Excluir
-              </button>
-            </div>
+              <Label className="p_results">Nome</Label>
+              <p className="product_result">{item.EstabelecimentoName}</p>
+              <Label className="p_results">Endereço</Label>
+              <p className="product_result">{item.Endereco}</p>
+              <Label className="p_results">Acessibilidade</Label>
+              <p className="product_result">{item.Acessibilidade}</p>
+              <Label className="p_results">Telefone</Label>
+              <p className="product_result">{item.Telefone}</p>
+              <div className="div_buttons_results">
+                <Link to={`/modify/${item.EstabelecimentoID}`}>
+                  <button className="modify_results">Alterar Local</button>
+                </Link>
+                <button
+                  name={item.EstabelecimentoID}
+                  onClick={handleDelete}
+                  className="delete_results"
+                >
+                  Excluir
+                </button>
+              </div>
             </Card>
           </CardItem>
         ))}
-    </Container>
+      </Container>
+    </div>
   );
 }
+
+
 
 export default EnderecosCadastrados;

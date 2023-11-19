@@ -11,10 +11,10 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-  height: 100vh;
+  height: auto;
 
   @media (max-width: 800px) {
-    height: 100vh;
+    height: auto;
   }
   
   @media (max-width: 480px) {

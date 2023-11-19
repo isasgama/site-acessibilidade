@@ -79,8 +79,8 @@ function MainMenu() {
       <HeaderTitle>Bem vindo(a) ao EasyAccess!</HeaderTitle>
       <Content>
         <Link to="/cadastrar-enderecos">Cadastre locais acessíveis</Link>
-        <MenuOption href="/edite-seu-cadastro">Editar cadastro</MenuOption>
-        <MenuOption href="/enderecos">Editar locais acessíveis</MenuOption>
+        <Link to="/edite-seu-cadastro">Editar cadastro</Link>
+        <Link to="/enderecos">Editar locais acessíveis</Link>
         <Button Text="Sair" onClick={() => [signout(), navigate("/login")]}>
           Sair
         </Button>

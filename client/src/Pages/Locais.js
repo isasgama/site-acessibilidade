@@ -108,6 +108,7 @@ const Locais = () => {
 
     if (params.toString()) {
         url += `?${params.toString()}`;
+        console.log(url)
     }
 
     fetch(url)

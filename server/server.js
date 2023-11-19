@@ -125,16 +125,16 @@ const server = http.createServer((req, res) => {
         res.end();
     });
 
-    // if (req.method === "GET") {
-    //     const url = new URL(req.url, `http://${req.headers.host}`);
-    //     const name = url.searchParams.get("name");
-    //     const accessibility = url.searchParams.get("accessibility");
+    if (req.method === "GET") {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const name = url.searchParams.get("name");
+        const accessibility = url.searchParams.get("accessibility");
 
-    //     filterData(name, accessibility, (result) => {
-    //         res.write(JSON.stringify(result));
-    //         res.end();
-    //     });
-    // }
+        filterData(name, accessibility, (result) => {
+            res.write(JSON.stringify(result));
+            res.end();
+        });
+    }
 
     // Verifica se é uma solicitação com o método POST.
     if (req.method === "POST") {
