@@ -18,6 +18,8 @@ import LoginEstabelecimento from './Pages/LoginEstabelecimento'
 import EnderecosCadastrados from './Pages/EnderecosCadastrados';
 import CadastrarLocais from './Pages/CadastrarLocais';
 import { AuthProvider } from './Contexts/auth';
+import EditarCadastro from './Pages/EditCadastroEstab';
+import EditarCadastroUsuario from './Pages/EditCadastroUser';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -58,6 +60,8 @@ root.render(
         <Route exact path="/estabelecimento" element={<Private Item={HomeEstabelecimento} />} />
         <Route path="/enderecos" element={<Private Item={EnderecosCadastrados} />} />
         <Route path="/cadastrar-enderecos" element={<Private Item={CadastrarLocais} />} />
+        <Route path="/edite-seu-cadastro-user" element={<Private Item={EditarCadastroUsuario} />} />
+        <Route path="/edite-seu-cadastro" element={<Private Item={EditarCadastro} />} />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/login" element={<Login />} />

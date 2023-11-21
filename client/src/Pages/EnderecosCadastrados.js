@@ -69,7 +69,7 @@ function EnderecosCadastrados() {
       headers: { "Content-Type": "application/json" },
     });
     // Atualiza a página para atualizar os dados do bd.
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (

@@ -79,7 +79,7 @@ function MainMenu() {
       <HeaderTitle>Bem vindo(a) ao EasyAccess!</HeaderTitle>
       <Content>
         <MenuOption to="/cadastrar-enderecos">Avaliar Locais</MenuOption>
-        <MenuOption href="/edite-seu-cadastro">Editar cadastro</MenuOption>
+        <MenuOption href="/edite-seu-cadastro-user">Editar cadastro</MenuOption>
         <Button Text="Sair" onClick={() => [signout(), navigate("/login")]}>
           Sair
         </Button>

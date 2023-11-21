@@ -7,25 +7,35 @@ export const AuthProvider = ({ children }) => {
   const [establishment, setEstablishment] = useState();
 
   useEffect(() => {
-    const userToken = localStorage.getItem("user_token");
-    const establishmentToken = localStorage.getItem("establishment_token");
-    const usersStorage = localStorage.getItem("users_bd");
-    const establishmentsStorage = localStorage.getItem("establishments_bd");
+    const userToken = JSON.parse(localStorage.getItem("user_token"));
+    const establishmentToken = JSON.parse(localStorage.getItem("establishment_token"));
+    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+    const establishmentsStorage = JSON.parse(localStorage.getItem("establishments_bd"));
 
-    if (userToken && usersStorage) {
-      const hasUser = JSON.parse(usersStorage)?.filter(
-        (user) => user.email === JSON.parse(userToken).email
+    const isTokenValid = (token) => {
+      return token && token.expiration && new Date().getTime() < token.expiration;
+    };
+
+    if (isTokenValid(userToken) && usersStorage) {
+      const hasUser = usersStorage.filter(
+        (user) => user.email === userToken.email
       );
 
-      if (hasUser) setUser(hasUser[0]);
+      if (hasUser.length > 0) setUser(hasUser[0]);
+    } else {
+      // Limpar token expirado
+      localStorage.removeItem("user_token");
     }
 
-    if (establishmentToken && establishmentsStorage) {
-      const hasEstablishment = JSON.parse(establishmentsStorage)?.filter(
-        (establishment) => establishment.email === JSON.parse(establishmentToken).email
+    if (isTokenValid(establishmentToken) && establishmentsStorage) {
+      const hasEstablishment = establishmentsStorage.filter(
+        (establishment) => establishment.email === establishmentToken.email
       );
 
-      if (hasEstablishment) setEstablishment(hasEstablishment[0]);
+      if (hasEstablishment.length > 0) setEstablishment(hasEstablishment[0]);
+    } else {
+      // Limpar token expirado
+      localStorage.removeItem("establishment_token");
     }
   }, []);
 
@@ -37,7 +47,10 @@ export const AuthProvider = ({ children }) => {
     if (hasUser?.length) {
       if (hasUser[0].email === email && hasUser[0].password === password) {
         const token = Math.random().toString(36).substring(2);
-        localStorage.setItem("user_token", JSON.stringify({ email, token }));
+        const expirationTime = 60 * 60 * 1000; // 1 hora em milissegundos
+        const tokenExpiration = new Date().getTime() + expirationTime;
+
+        localStorage.setItem("user_token", JSON.stringify({ email, token, expiration: tokenExpiration }));
         setUser({ email, password });
         return;
       } else {
@@ -48,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = (email, password) => {
+  const signup = (email, password, nome, enderecoUser, telefone) => {
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
 
     const hasUser = usersStorage?.filter((user) => user.email === email);
@@ -60,9 +73,9 @@ export const AuthProvider = ({ children }) => {
     let newUser;
 
     if (usersStorage) {
-      newUser = [...usersStorage, { email, password }];
+      newUser = [...usersStorage, { email, password, nome, enderecoUser, telefone }];
     } else {
-      newUser = [{ email, password }];
+      newUser = [{ email, password, nome, enderecoUser, telefone }];
     }
 
     localStorage.setItem("users_bd", JSON.stringify(newUser));
@@ -75,10 +88,33 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user_token");
   };
 
-  const signinEstablishment = (email, password) => {
-    const establishmentStorage = JSON.parse(localStorage.getItem("establishment_bd"));
+  const updateUser = (email, newEnderecoUser, newTelefone, newNomeUser) => {
+    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+  
+    const updateUsers = usersStorage.map((user) => {
+      if (user.email === email) {
+        return {
+          ...user,
+          enderecoUser: newEnderecoUser,
+          telefone: newTelefone,
+          nome: newNomeUser
+        };
+      }
+      return establishment;
+    });
+  
+    localStorage.setItem("users_bd", JSON.stringify(updateUsers));
+  };
 
-    const hasUser = establishmentStorage?.filter((establishment) => establishment.email === email);
+  const getUserData = () => {
+    const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+    return usersStorage && usersStorage.length > 0 ? usersStorage[0] : null;
+  };
+
+  const signinEstablishment = (email, password) => {
+    const establishmentsStorage = JSON.parse(localStorage.getItem("establishment_bd"));
+
+    const hasUser = establishmentsStorage?.filter((establishment) => establishment.email === email);
 
     if (hasUser?.length) {
       if (hasUser[0].email === email && hasUser[0].password === password) {
@@ -94,10 +130,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signupEstablishment = (email, password) => {
-    const establishmentStorage = JSON.parse(localStorage.getItem("establishment_bd"));
+  const signupEstablishment = (email, password, nomeEstabelecimento, enderecoEstabelecimento) => {
+    const establishmentsStorage = JSON.parse(localStorage.getItem("establishment_bd"));
 
-    const hasUser = establishmentStorage?.filter((user) => user.email === email);
+    const hasUser = establishmentsStorage?.filter((user) => user.email === email);
 
     if (hasUser?.length) {
       return "Já tem uma conta com esse E-mail";
@@ -105,10 +141,10 @@ export const AuthProvider = ({ children }) => {
 
     let newUser;
 
-    if (establishmentStorage) {
-      newUser = [...establishmentStorage, { email, password }];
+    if (establishmentsStorage) {
+      newUser = [...establishmentsStorage, { email, password, nomeEstabelecimento, enderecoEstabelecimento }];
     } else {
-      newUser = [{ email, password }];
+      newUser = [{ email, password, nomeEstabelecimento, enderecoEstabelecimento }];
     }
 
     localStorage.setItem("establishment_bd", JSON.stringify(newUser));
@@ -119,6 +155,28 @@ export const AuthProvider = ({ children }) => {
   const signoutEstablishment = () => {
     setEstablishment(null);
     localStorage.removeItem("establishment_token");
+  };
+
+  const updateEstablishment = (email, newPassword, newNomeEstabelecimento, newEnderecoEstabelecimento) => {
+    const establishmentsStorage = JSON.parse(localStorage.getItem("establishment_bd"));
+  
+    const updatedEstablishments = establishmentsStorage.map((establishment) => {
+      if (establishment.email === email) {
+        return {
+          ...establishment,
+          nomeEstabelecimento: newNomeEstabelecimento,
+          enderecoEstabelecimento: newEnderecoEstabelecimento,
+        };
+      }
+      return establishment;
+    });
+  
+    localStorage.setItem("establishment_bd", JSON.stringify(updatedEstablishments));
+  };
+
+  const getEstablishmentData = () => {
+    const establishmentStorage = JSON.parse(localStorage.getItem("establishment_bd"));
+    return establishmentStorage && establishmentStorage.length > 0 ? establishmentStorage[0] : null;
   };
 
   return (
@@ -133,6 +191,10 @@ export const AuthProvider = ({ children }) => {
         signinEstablishment,
         signupEstablishment,
         signoutEstablishment,
+        updateEstablishment,
+        getEstablishmentData,
+        updateUser,
+        getUserData
       }}
     >
       {children}

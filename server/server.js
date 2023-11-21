@@ -1,12 +1,12 @@
 const http = require("http");
+const url = require("url");
 const sqlite3 = require("sqlite3").verbose();
 
-// Cria uma conexão com o banco de dados easyAccess.db
 const db = new sqlite3.Database("easyAccess.db", (err) => {
     if (err) {
         console.error(err);
     } else {
-        console.log("Conexão estabelecida com sucesso.")
+        console.log("Conexão estabelecida com sucesso.");
     }
 });
 
@@ -29,39 +29,24 @@ db.run(
 );
 
 // Realiza uma consulta de todas as informações da tabela local.
-const search = (callback) => {
-    db.all("SELECT * FROM Local", (err, rows) => {
-        if (err) {
-            console.error(err);
-        } else {
-            callback(rows);
-        }
-    });
-};
+const search = (filters, callback) => {
+    let sql = "SELECT * FROM Local WHERE 1";
+    const params = [];
 
-const filterData = (name, accessibility, callback) => {
-    let sql = "SELECT * FROM Local";
-    let params = [];
-
-    if (!name && !accessibility) {
-        callback([]); // Retorna uma lista vazia se nenhum filtro for fornecido
-        return;
+    if (filters.name) {
+        sql += " AND EstabelecimentoName LIKE ?";
+        params.push(`%${filters.name}%`);
     }
 
-    sql += " WHERE ";
-    let conditions = [];
-
-    if (name) {
-        conditions.push("EstabelecimentoName LIKE ?");
-        params.push(`%${name}%`);
+    if (filters.endereco) {
+        sql += " AND Endereco LIKE ?";
+        params.push(`%${filters.endereco}%`);
     }
 
-    if (accessibility) {
-        conditions.push("Acessibilidade = ?");
-        params.push(accessibility);
+    if (filters.accessibility) {
+        sql += " AND Acessibilidade LIKE ?";
+        params.push(`%${filters.accessibility}%`);
     }
-
-    sql += conditions.join(" AND ");
 
     db.all(sql, params, (err, rows) => {
         if (err) {
@@ -115,29 +100,28 @@ const modifyData = db.prepare(
 );
 
 const server = http.createServer((req, res) => {
-    // Para permitir os CORS e que não tenha problema en este exemplo.
+    // Para permitir os CORS e evitar problemas neste exemplo.
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    // Retorna todas as informações para o servidor.
-    search((result) => {
-        res.write(JSON.stringify(result));
-        res.end();
-    });
 
+    // Verifica se é uma solicitação com o método GET.
     if (req.method === "GET") {
-        const url = new URL(req.url, `http://${req.headers.host}`);
-        const name = url.searchParams.get("name");
-        const accessibility = url.searchParams.get("accessibility");
+        // Obtém os filtros da URL
+        const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+        const filters = {
+            name: parsedUrl.searchParams.get('name'),
+            endereco: parsedUrl.searchParams.get('endereco'),
+            accessibility: parsedUrl.searchParams.get('accessibility'),
+        };
 
-        filterData(name, accessibility, (result) => {
+        // Retorna as informações filtradas para o servidor.
+        search(filters, (result) => {
             res.write(JSON.stringify(result));
             res.end();
         });
-    }
-
-    // Verifica se é uma solicitação com o método POST.
-    if (req.method === "POST") {
+    } else if (req.method === "POST") {
+        // Verifica se é uma solicitação com o método POST.
         let body = "";
         // Recebe as informações enviadas para o servidor.
         req.on("data", (chunk) => {
@@ -155,11 +139,14 @@ const server = http.createServer((req, res) => {
                 parsedBody.Telefone,
             );
             console.log("Dados criados com sucesso.");
+
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Methods", "POST");
+            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+            res.end("Dados criados com sucesso.");
         });
-
-
-        // Verifica se é uma solicitação com o método DELETE.
     } else if (req.method === "DELETE") {
+        // Verifica se é uma solicitação com o método DELETE.
         let body = "";
         req.on("data", (chunk) => {
             body += chunk;
@@ -170,9 +157,14 @@ const server = http.createServer((req, res) => {
             // Usamos a consulta preparada para excluir os dados que o Frontend indicar.
             deleteData.run(parsedBody.EstabelecimentoID);
             console.log("Dados excluídos com sucesso.");
+
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Methods", "DELETE");
+            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+            res.end("Dados excluídos com sucesso.");
         });
-        // Verifica se é uma solicitação com o método PUT.
     } else if (req.method === "PUT") {
+        // Verifica se é uma solicitação com o método PUT.
         let body = "";
         req.on("data", (chunk) => {
             body += chunk;
@@ -188,9 +180,17 @@ const server = http.createServer((req, res) => {
                 parsedBody.Telefone,
             );
             console.log("Dados modificados com sucesso.");
-        });
-    }
 
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Allow-Methods", "PUT");
+            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+            res.end("Dados modificados com sucesso.");
+        });
+    } else {
+        // Caso não seja nenhum dos métodos acima, retorna 404 Not Found.
+        res.statusCode = 404;
+        res.end("Not Found");
+    }
 });
 
 const port = 3002;

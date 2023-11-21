@@ -71,7 +71,7 @@ const Button = styled.button`
 
 
 function MainMenu() {
-  const { signout } = useAuth();
+  const { signoutEstablishment } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -81,7 +81,7 @@ function MainMenu() {
         <Link to="/cadastrar-enderecos">Cadastre locais acessíveis</Link>
         <Link to="/edite-seu-cadastro">Editar cadastro</Link>
         <Link to="/enderecos">Editar locais acessíveis</Link>
-        <Button Text="Sair" onClick={() => [signout(), navigate("/login")]}>
+        <Button Text="Sair" onClick={() => [signoutEstablishment(), navigate("/login")]}>
           Sair
         </Button>
       </Content>

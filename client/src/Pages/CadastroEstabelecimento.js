@@ -94,7 +94,7 @@ const SignupEstabelecimento = () => {
       return;
     }
 
-    const res = signupEstablishment(emailEstabelecimento, senha);
+    const res = signupEstablishment(emailEstabelecimento, senha, nomeEstabelecimento, enderecoEstabelecimento);
 
     if (res) {
       setError(res);

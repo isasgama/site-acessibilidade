@@ -75,7 +75,7 @@ const Select = styled.select`
 const Signup = () => {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [enderecoUsuario, setenderecoUsuario] = useState("");
+  const [enderecoUser, setEnderecoUser] = useState("");
   const [email, setEmail] = useState("");
   const [emailConf, setEmailConf] = useState("");
   const [senha, setSenha] = useState("");
@@ -87,7 +87,7 @@ const Signup = () => {
   const { signup } = useAuth();
 
   const handleSignup = () => {
-    if (!email | !emailConf | !senha | !nome | !enderecoUsuario) {
+    if (!email | !emailConf | !senha | !nome | !enderecoUser | !telefone) {
       setError("Preencha todos os campos");
       return;
     } else if (email !== emailConf) {
@@ -95,7 +95,7 @@ const Signup = () => {
       return;
     }
 
-    const res = signup(email, senha);
+    const res = signup(email, senha, nome, enderecoUser, telefone);
 
     if (res) {
       setError(res);
@@ -126,10 +126,10 @@ const Signup = () => {
           onChange={(e) => [setNome(e.target.value), setError("")]}
         />
         <InputLogin
-          type="endereço"
+          type="enderecoUsuario"
           placeholder="Digite seu Endereço"
-          value={enderecoUsuario}
-          onChange={(e) => [setenderecoUsuario(e.target.value), setError("")]}
+          value={enderecoUser}
+          onChange={(e) => [setEnderecoUser(e.target.value), setError("")]}
         />
         <InputLogin
           type="telefone"

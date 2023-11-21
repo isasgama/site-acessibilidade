@@ -87,6 +87,10 @@ const SearchInput = styled.input`
   outline: none;
 `;
 
+const StyledHeading = styled.h2`
+  text-align: center;
+`;
+
 const Locais = () => {
   const [expanded, setExpanded] = useState(false);
   const [result, setResult] = useState([]);
@@ -115,6 +119,7 @@ const Locais = () => {
       .then((res) => res.json())
       .then((data) => {
         setResult(data);
+        console.log(result)
       })
       .catch((err) => {
         console.error(err);
@@ -124,6 +129,7 @@ const Locais = () => {
   return (
       <div>
         <div>
+        <StyledHeading> Pesquise com Filtros </StyledHeading>
           <Container>
               <SearchInput
                   type="text" 
@@ -137,11 +143,17 @@ const Locais = () => {
                   value={addressFilter}
                   onChange={(e) => setAddressFilter(e.target.value)}
               />
-              <select value={accessibilityFilter} onChange={(e) => setAccessibilityFilter(e.target.value)}>
+              <SearchInput 
+                  type="text" 
+                  placeholder="Acessibilidade Disponível" 
+                  value={accessibilityFilter}
+                  onChange={(e) => setAccessibilityFilter(e.target.value)}
+              />
+              {/* <select value={accessibilityFilter} onChange={(e) => setAccessibilityFilter(e.target.value)}>
                   <option value="">Todas Acessibilidades</option>
                   <option value="Acessível">Acessível</option>
                   <option value="Não Acessível">Não Acessível</option>
-              </select>
+              </select> */}
               <button onClick={fetchData}>Filtrar</button>
               </Container>
           </div>
