@@ -24,43 +24,17 @@ const SearchButton = styled.button`
   cursor: pointer;
 `;
 
-const SearchResults = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px; /* Espaço adicional para os resultados */
-`;
-
-const SearchResultItem = styled.li`
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-`;
-
-const MyComponent = () => {
-  const navigate = useNavigate();
-
-  return (
-    <SearchBar onSearch={navigate} />
-  );
-};
-
-function SearchBar({ onSearch }) {
-  const [data, setData] = useState([]);
-  const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState('');
+function SearchBar() {
   const [result, setResult] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
-  const [addressFilter, setAddressFilter] = useState('');
-  const [accessibilityFilter, setAccessibilityFilter] = useState('');
+  const navigate = useNavigate();
 
-  const handleSearch = () => {
+  const fetchData = (event) => {
+    event.preventDefault(); 
     let url = `http://localhost:3002/`;
 
     const params = new URLSearchParams();
     if (nameFilter) params.append('name', nameFilter);
-    if (addressFilter) params.append('endereco', addressFilter);
-    if (accessibilityFilter) params.append('accessibility', accessibilityFilter);
 
     if (params.toString()) {
         url += `?${params.toString()}`;
@@ -71,8 +45,9 @@ function SearchBar({ onSearch }) {
       .then((res) => res.json())
       .then((data) => {
         setResult(data);
-        onSearch('/locais');
-        console.log(result)
+        if (data.length > 0) {
+          navigate("/locais", { state: { results: data } });
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -81,17 +56,14 @@ function SearchBar({ onSearch }) {
 
 
   return (
-    <SearchContainer onSubmit={handleSearch} aria-label="Pesquisar Locais">
+    <SearchContainer aria-label="Pesquisar Locais">
       <SearchInput
         type="text"
         placeholder="Pesquisar Locais..."
         value={nameFilter}
         onChange={(e) => setNameFilter(e.target.value)}
       />
-      <SearchButton type="submit">Buscar</SearchButton>
-      <SearchResults aria-live="polite"> {/* Indique que os resultados são dinâmicos */}
-        {/* Renderize os resultados aqui */}
-      </SearchResults>
+      <SearchButton onClick={fetchData}>Buscar</SearchButton>
     </SearchContainer>
   );
 }

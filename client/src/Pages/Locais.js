@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import { useState, useEffect } from 'react';
 import backgroundImage from '../images/locais.jpg'
+import { useLocation } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -39,19 +40,19 @@ const Content = styled.div`
 
 const Title = styled.h1`
   color: #333;
-  font-size: 24px;
+  font-size: 26px;
   margin-bottom: 8px;
 `;
 
 const Rating = styled.p`
   color: #007bff;
-  font-size: 16px;
+  font-size: 18px;
   margin: 0;
 `;
 
 const Address = styled.p`
   color: #666;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0;
 `;
 
@@ -68,7 +69,7 @@ const TextContainer = styled.div`
 
 const Texto = styled.p`
   color: #333;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0;
   white-space: ${({ expanded }) => (expanded ? 'normal' : '45px')};
 `;
@@ -97,6 +98,8 @@ const Locais = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [addressFilter, setAddressFilter] = useState('');
   const [accessibilityFilter, setAccessibilityFilter] = useState('');
+  const location = useLocation();
+  const results = location.state?.results || [];
 
   const toggleText = () => {
       setExpanded(!expanded);
@@ -162,7 +165,29 @@ const Locais = () => {
             <CardContainer key={index}>
                 <Content>
                     <Title>{item.EstabelecimentoName}</Title>
-                    <Rating>✰✰✰✰✰ 10 avaliações</Rating>
+                    <Address>{item.Endereco}</Address>
+                    <Imagem src={backgroundImage} alt="Imagem de uma feijoada bem suculenta" />
+                    <Title>Acessibilidade Disponível</Title>
+                    <Texto>{item.Acessibilidade}</Texto>
+                    <Title>Telefone</Title>
+                    <Texto>{item.Telefone}</Texto>
+                    <Title>Pontuações e Avaliações</Title>
+                    <Rating>4,0 ✰✰✰✰✰ 10 avaliações</Rating>
+                    <TextContainer expanded={expanded}>
+                        <Texto expanded={expanded}>
+                            "Eu amei a feijoada da Feijoada da Vovó! O prato estava delicioso e bem servido. O único ponto negativo foi a demora para ser atendido e servido, mas nada que atrapalhasse a minha experiência. Recomendo o restaurante para quem está procurando uma boa feijoada."
+                        </Texto>
+                    </TextContainer>
+                    {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>}
+                </Content>
+            </CardContainer>
+             ))}        
+           </Container>
+           <Container>
+          {results.map((item, index) => (
+            <CardContainer key={index}>
+                <Content>
+                    <Title>{item.EstabelecimentoName}</Title>
                     <Address>{item.Endereco}</Address>
                     <Imagem src={backgroundImage} alt="Imagem de uma feijoada bem suculenta" />
                     <Title>Acessibilidade Disponível</Title>
