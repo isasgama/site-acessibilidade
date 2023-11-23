@@ -10,32 +10,32 @@ export const AuthProvider = ({ children }) => {
     const userToken = JSON.parse(localStorage.getItem("user_token"));
     const establishmentToken = JSON.parse(localStorage.getItem("establishment_token"));
     const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
-    const establishmentsStorage = JSON.parse(localStorage.getItem("establishments_bd"));
+    const establishmentsStorage = JSON.parse(localStorage.getItem("establishment_bd"));
 
-    const isTokenValid = (token) => {
-      return token && token.expiration && new Date().getTime() < token.expiration;
-    };
-
-    if (isTokenValid(userToken) && usersStorage) {
-      const hasUser = usersStorage.filter(
+    if (userToken && usersStorage) {
+      const hasUser = usersStorage.find(
         (user) => user.email === userToken.email
       );
-
-      if (hasUser.length > 0) setUser(hasUser[0]);
-    } else {
-      // Limpar token expirado
-      localStorage.removeItem("user_token");
+  
+      if (hasUser) {
+        setUser(hasUser);
+      } else {
+        // Limpar token se o usuário não for encontrado
+        localStorage.removeItem("user_token");
+      }
     }
-
-    if (isTokenValid(establishmentToken) && establishmentsStorage) {
-      const hasEstablishment = establishmentsStorage.filter(
+  
+    if (establishmentToken && establishmentsStorage) {
+      const hasEstablishment = establishmentsStorage.find(
         (establishment) => establishment.email === establishmentToken.email
       );
-
-      if (hasEstablishment.length > 0) setEstablishment(hasEstablishment[0]);
-    } else {
-      // Limpar token expirado
-      localStorage.removeItem("establishment_token");
+  
+      if (hasEstablishment) {
+        setEstablishment(hasEstablishment);
+      } else {
+        // Limpar token se o estabelecimento não for encontrado
+        localStorage.removeItem("establishment_token");
+      }
     }
   }, []);
 

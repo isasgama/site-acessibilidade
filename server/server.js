@@ -102,8 +102,14 @@ const modifyData = db.prepare(
 const server = http.createServer((req, res) => {
     // Para permitir os CORS e evitar problemas neste exemplo.
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
 
     // Verifica se é uma solicitação com o método GET.
     if (req.method === "GET") {
@@ -172,15 +178,16 @@ const server = http.createServer((req, res) => {
         req.on("end", () => {
             const parsedBody = JSON.parse(body);
             console.log(parsedBody);
-            // Usamos a consulta preparada para modificar os dados recebidos do Frontend.
+            // Adicione a cláusula WHERE para especificar qual registro deve ser modificado.
             modifyData.run(
                 parsedBody.EstabelecimentoName,
                 parsedBody.Endereco,
                 parsedBody.Acessibilidade,
                 parsedBody.Telefone,
+                parsedBody.EstabelecimentoID  // Adicione a cláusula WHERE aqui
             );
             console.log("Dados modificados com sucesso.");
-
+    
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Allow-Methods", "PUT");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");

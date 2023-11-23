@@ -106,7 +106,7 @@ function CadastrarLocais() {
         } else {
           // Se não encontrar o item, redireciona para a página principal.
           if (!redirected) {
-            setRedirected(true);
+            setRedirected(false);
             navigate("/estabelecimento");
           }
         }
@@ -118,14 +118,17 @@ function CadastrarLocais() {
 
   // Envia as informações para o backend quando o botão de enviar é clicado.
   const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("entrou na função");
     const foundItem = result.find(
       (item) => window.location.pathname === `/modify/${item.EstabelecimentoID}`
     );
     if (foundItem) {
+      console.log("entrou no if");
       fetch("http://localhost:3002", {
         method: "PUT",
         body: JSON.stringify(dataToInsert),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json"},
       });
       navigate("/");
     } else {
@@ -134,10 +137,12 @@ function CadastrarLocais() {
         body: JSON.stringify(dataToInsert),
         headers: { "Content-Type": "application/json" },
       });
+      console.log(dataToInsert);
     }
   };
   // Armazena as informações no estado conforme são digitados.
   const handleChange = (e) => {
+    console.log("handleChange chamado");
     setDataToInsert({
       ...dataToInsert,
       [e.target.name]: e.target.value,
@@ -148,7 +153,7 @@ function CadastrarLocais() {
     <Container>
       <Content>
       <Label> CADASTRE SEU LOCAL COM ACESSIBILIDADE </Label>
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={(e) => handleSubmit(e)} className="form">
         <Input
           className="form_input"
           type="text"

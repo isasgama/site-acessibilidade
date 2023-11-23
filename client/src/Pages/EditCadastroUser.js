@@ -74,7 +74,7 @@ const EditarCadastroUsuario = () => {
 
   return (
     <Container>
-      <h1>Editar Cadastro</h1>
+      <h2>Dados Cadastrais:</h2>
       
       {/* Exibir os dados atuais acima do formulário */}
       <div>
@@ -83,6 +83,7 @@ const EditarCadastroUsuario = () => {
         <p>Nome: {getUserData().nome}</p>
         <p>Telefone: {getUserData().telefone}</p>
       </div>
+      <h2>Editar Cadastro:</h2>
       <Form onSubmit={handleSubmit}>
         <Label htmlFor="email">Email:</Label>
         <Input

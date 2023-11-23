@@ -171,14 +171,14 @@ const Locais = () => {
                     <Texto>{item.Acessibilidade}</Texto>
                     <Title>Telefone</Title>
                     <Texto>{item.Telefone}</Texto>
-                    <Title>Pontuações e Avaliações</Title>
+                    {/* <Title>Pontuações e Avaliações</Title>
                     <Rating>4,0 ✰✰✰✰✰ 10 avaliações</Rating>
                     <TextContainer expanded={expanded}>
                         <Texto expanded={expanded}>
                             "Eu amei a feijoada da Feijoada da Vovó! O prato estava delicioso e bem servido. O único ponto negativo foi a demora para ser atendido e servido, mas nada que atrapalhasse a minha experiência. Recomendo o restaurante para quem está procurando uma boa feijoada."
                         </Texto>
                     </TextContainer>
-                    {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>}
+                    {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>} */}
                 </Content>
             </CardContainer>
              ))}        
@@ -194,14 +194,14 @@ const Locais = () => {
                     <Texto>{item.Acessibilidade}</Texto>
                     <Title>Telefone</Title>
                     <Texto>{item.Telefone}</Texto>
-                    <Title>Pontuações e Avaliações</Title>
+                    {/* <Title>Pontuações e Avaliações</Title>
                     <Rating>4,0 ✰✰✰✰✰ 10 avaliações</Rating>
                     <TextContainer expanded={expanded}>
                         <Texto expanded={expanded}>
                             "Eu amei a feijoada da Feijoada da Vovó! O prato estava delicioso e bem servido. O único ponto negativo foi a demora para ser atendido e servido, mas nada que atrapalhasse a minha experiência. Recomendo o restaurante para quem está procurando uma boa feijoada."
                         </Texto>
                     </TextContainer>
-                    {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>}
+                    {!expanded && <VerMaisButton onClick={toggleText}>Ver mais</VerMaisButton>} */}
                 </Content>
             </CardContainer>
              ))}        

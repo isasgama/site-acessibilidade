@@ -69,7 +69,7 @@ function EnderecosCadastrados() {
       headers: { "Content-Type": "application/json" },
     });
     // Atualiza a página para atualizar os dados do bd.
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
@@ -89,7 +89,7 @@ function EnderecosCadastrados() {
               <p className="product_result">{item.Telefone}</p>
               <div className="div_buttons_results">
                 <Link to={`/modify/${item.EstabelecimentoID}`}>
-                  <button className="modify_results">Alterar Local</button>
+                  {/* <button className="modify_results">Alterar Local</button> */}
                 </Link>
                 <button
                   name={item.EstabelecimentoID}
