@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import LabelSignup from './Login'
-import Strong from './Login'
 import { Link } from "react-router-dom";
 
 
@@ -79,11 +77,11 @@ function CadastrarLocais() {
     Endereco: "",
     Acessibilidade: "",
     Telefone: "",
+    Latitude: "",
+    Longitude: "", 
   });
   const [redirected, setRedirected] = useState(true);
   const navigate = useNavigate();
-
-
 
   //   Faz a solicitação das informações no backend quando a página é carregada.
   useEffect(() => {
@@ -117,29 +115,65 @@ function CadastrarLocais() {
   }, []);
 
   // Envia as informações para o backend quando o botão de enviar é clicado.
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("entrou na função");
-    const foundItem = result.find(
+
+    // Obter coordenadas do endereço usando a API de Geocodificação
+    const address = `${dataToInsert.Endereco}`;
+    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+    const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(geocodingUrl);
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+          const location = data.results[0].geometry.location;
+          setDataToInsert((prevState) => ({
+              ...prevState,
+              Latitude: location.lat,
+              Longitude: location.lng,
+          }));
+
+          // Verificar se as coordenadas foram atualizadas corretamente
+          console.log("Novas coordenadas:", location.lat, location.lng);
+
+          // Aguardar a conclusão da obtenção das coordenadas antes de enviar as informações para o backend
+          if (location.lat && location.lng) {
+              await createOrUpdateData();
+          } else {
+              console.error("As coordenadas não foram obtidas corretamente.");
+          }
+      }
+  } catch (error) {
+      console.error("Erro ao obter coordenadas:", error);
+  }
+};
+
+// Função para criar ou atualizar os dados no backend
+const createOrUpdateData = async () => {
+  const foundItem = result.find(
       (item) => window.location.pathname === `/modify/${item.EstabelecimentoID}`
-    );
-    if (foundItem) {
+  );
+
+  if (foundItem) {
       console.log("entrou no if");
-      fetch("http://localhost:3002", {
-        method: "PUT",
-        body: JSON.stringify(dataToInsert),
-        headers: { "Content-Type": "application/json"},
+      await fetch(`http://localhost:3002/${foundItem.EstabelecimentoID}`, {
+          method: "PUT",
+          body: JSON.stringify(dataToInsert),
+          headers: { "Content-Type": "application/json" },
       });
       navigate("/");
-    } else {
-      fetch("http://localhost:3002", {
-        method: "POST",
-        body: JSON.stringify(dataToInsert),
-        headers: { "Content-Type": "application/json" },
+  } else {
+      await fetch("http://localhost:3002", {
+          method: "POST",
+          body: JSON.stringify(dataToInsert),
+          headers: { "Content-Type": "application/json" },
       });
       console.log(dataToInsert);
-    }
-  };
+  }
+};
   // Armazena as informações no estado conforme são digitados.
   const handleChange = (e) => {
     console.log("handleChange chamado");

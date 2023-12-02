@@ -1,5 +1,4 @@
 const http = require("http");
-const url = require("url");
 const sqlite3 = require("sqlite3").verbose();
 
 const db = new sqlite3.Database("easyAccess.db", (err) => {
@@ -10,14 +9,15 @@ const db = new sqlite3.Database("easyAccess.db", (err) => {
     }
 });
 
-// Cria Tabela Local
 db.run(
     `CREATE TABLE IF NOT EXISTS Local(
         EstabelecimentoID INTEGER PRIMARY KEY AUTOINCREMENT,
         EstabelecimentoName TEXT,
         Endereco TEXT,
         Acessibilidade TEXT,
-        Telefone TEXT
+        Telefone TEXT,
+        Latitude REAL,
+        Longitude REAL
     )`,
     (err) => {
         if (err) {
@@ -59,8 +59,8 @@ const search = (filters, callback) => {
 
 // Prepara uma consulta para adicionar dados ao nosso bd.
 const insertData = db.prepare(
-    `INSERT INTO Local (EstabelecimentoName, Endereco, Acessibilidade, Telefone)
-    VALUES (?, ?, ?, ?)`,
+    `INSERT INTO Local (EstabelecimentoName, Endereco, Acessibilidade, Telefone, Latitude, Longitude)
+     VALUES (?, ?, ?, ?, ?, ?)`,
     (err) => {
         if (err) {
             console.error(err);
@@ -85,11 +85,13 @@ const deleteData = db.prepare(
 // Prepara uma consulta para modificar os dados do bd.
 const modifyData = db.prepare(
     `UPDATE Local
-      SET EstabelecimentoName = ?,
-          Endereco = ?,
-          Acessibilidade = ?,
-          Telefone = ?
-      WHERE EstabelecimentoID = ?`,
+     SET EstabelecimentoName = ?,
+         Endereco = ?,
+         Acessibilidade = ?,
+         Telefone = ?,
+         Latitude = ?,
+         Longitude = ?
+     WHERE EstabelecimentoID = ?`,
     (err) => {
         if (err) {
             console.error(err);
@@ -100,7 +102,6 @@ const modifyData = db.prepare(
 );
 
 const server = http.createServer((req, res) => {
-    // Para permitir os CORS e evitar problemas neste exemplo.
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -111,9 +112,7 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Verifica se é uma solicitação com o método GET.
     if (req.method === "GET") {
-        // Obtém os filtros da URL
         const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
         const filters = {
             name: parsedUrl.searchParams.get('name'),
@@ -121,15 +120,12 @@ const server = http.createServer((req, res) => {
             accessibility: parsedUrl.searchParams.get('accessibility'),
         };
 
-        // Retorna as informações filtradas para o servidor.
         search(filters, (result) => {
             res.write(JSON.stringify(result));
             res.end();
         });
     } else if (req.method === "POST") {
-        // Verifica se é uma solicitação com o método POST.
         let body = "";
-        // Recebe as informações enviadas para o servidor.
         req.on("data", (chunk) => {
             body += chunk;
         });
@@ -137,12 +133,13 @@ const server = http.createServer((req, res) => {
             // Deserializa as informações.
             const parsedBody = JSON.parse(body);
             console.log(parsedBody);
-            // Usa a consulta preparada para inserir os dados recebidos do Frontend.
             insertData.run(
                 parsedBody.EstabelecimentoName,
                 parsedBody.Endereco,
                 parsedBody.Acessibilidade,
                 parsedBody.Telefone,
+                parsedBody.Latitude,
+                parsedBody.Longitude
             );
             console.log("Dados criados com sucesso.");
 
@@ -152,15 +149,12 @@ const server = http.createServer((req, res) => {
             res.end("Dados criados com sucesso.");
         });
     } else if (req.method === "DELETE") {
-        // Verifica se é uma solicitação com o método DELETE.
         let body = "";
         req.on("data", (chunk) => {
             body += chunk;
         });
         req.on("end", () => {
             const parsedBody = JSON.parse(body);
-            console.log(parsedBody);
-            // Usamos a consulta preparada para excluir os dados que o Frontend indicar.
             deleteData.run(parsedBody.EstabelecimentoID);
             console.log("Dados excluídos com sucesso.");
 
@@ -170,21 +164,18 @@ const server = http.createServer((req, res) => {
             res.end("Dados excluídos com sucesso.");
         });
     } else if (req.method === "PUT") {
-        // Verifica se é uma solicitação com o método PUT.
         let body = "";
         req.on("data", (chunk) => {
             body += chunk;
         });
         req.on("end", () => {
             const parsedBody = JSON.parse(body);
-            console.log(parsedBody);
-            // Adicione a cláusula WHERE para especificar qual registro deve ser modificado.
             modifyData.run(
                 parsedBody.EstabelecimentoName,
                 parsedBody.Endereco,
                 parsedBody.Acessibilidade,
                 parsedBody.Telefone,
-                parsedBody.EstabelecimentoID  // Adicione a cláusula WHERE aqui
+                parsedBody.EstabelecimentoID
             );
             console.log("Dados modificados com sucesso.");
     
@@ -194,7 +185,6 @@ const server = http.createServer((req, res) => {
             res.end("Dados modificados com sucesso.");
         });
     } else {
-        // Caso não seja nenhum dos métodos acima, retorna 404 Not Found.
         res.statusCode = 404;
         res.end("Not Found");
     }
